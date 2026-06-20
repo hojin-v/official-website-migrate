@@ -65,6 +65,53 @@ function buildMenu(t) {
 const childrenOf = (menu, path) => menu.find((m) => m.path === path)?.children || [];
 
 /* ------------------------------------------------------------------ */
+/* Brand logo (SVG recreation of the legacy highimage.co.kr logo:      */
+/* four maroon squares + deep-blue "HITS" wordmark + gray subtitle)    */
+/* ------------------------------------------------------------------ */
+function Logo({ variant = "light", className = "" }) {
+  const blue = variant === "dark" ? "#ffffff" : "#0b2a8c";
+  const red = variant === "dark" ? "#e2574d" : "#8a1a1a";
+  const gray = variant === "dark" ? "rgba(255,255,255,0.62)" : "#4d4d4d";
+  return (
+    <svg
+      className={`logo ${className}`}
+      viewBox="0 0 210 62"
+      role="img"
+      aria-label="HITS — High Image Technology System"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g fill={red}>
+        <rect x="2" y="0" width="12" height="12" />
+        <rect x="19" y="0" width="12" height="12" />
+        <rect x="36" y="0" width="12" height="12" />
+      </g>
+      <text
+        x="0"
+        y="47"
+        fontFamily="Pretendard, Arial, sans-serif"
+        fontWeight="800"
+        fontSize="44"
+        letterSpacing="-1"
+        fill={blue}
+      >
+        HITS
+      </text>
+      <text
+        x="2"
+        y="60"
+        fontFamily="Pretendard, Arial, sans-serif"
+        fontWeight="600"
+        fontSize="8.6"
+        letterSpacing="0.8"
+        fill={gray}
+      >
+        HIGH IMAGE TECHNOLOGY SYSTEM
+      </text>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Routing helpers                                                     */
 /* ------------------------------------------------------------------ */
 function routeFromHash() {
@@ -303,8 +350,7 @@ function MenuOverlay({ onClose }) {
       <div className="menu-overlay-top">
         <div className="container menu-overlay-top-inner">
           <a className="brand" href={to("/")} onClick={onClose} aria-label={t("a11y.home")}>
-            <strong>{c.site.brand}</strong>
-            <span>High Image Technology System</span>
+            <Logo />
           </a>
           <button className="util-btn" type="button" onClick={onClose} aria-label={t("menu.close")}>
             <X size={24} aria-hidden="true" />
@@ -366,8 +412,7 @@ function Header({ route }) {
       <header className="site-header">
         <div className="header-inner">
           <a className="brand" href={to("/")} aria-label={t("a11y.home")}>
-            <strong>{c.site.brand}</strong>
-            <span>High Image Technology System</span>
+            <Logo />
           </a>
 
           <nav className="desktop-nav" aria-label={t("a11y.mainnav")}>
@@ -1285,7 +1330,7 @@ function Footer() {
       <div className="container">
         <div className="footer-top">
           <div className="footer-brand">
-            <strong>{site.brand}</strong>
+            <Logo variant="dark" className="footer-logo" />
             <p>{site.tagline}</p>
           </div>
           <div className="footer-col">

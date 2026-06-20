@@ -254,23 +254,14 @@ button {
 
 .brand {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
+  align-items: center;
   flex-shrink: 0;
 }
 
-.brand strong {
-  font-size: 25px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--brand);
-}
-
-.brand span {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--muted);
+.brand .logo {
+  height: 38px;
+  width: auto;
+  display: block;
 }
 
 .desktop-nav {
@@ -1894,10 +1885,11 @@ button {
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.footer-brand strong {
-  font-size: 26px;
-  font-weight: 800;
-  color: #fff;
+.footer-logo {
+  height: 44px;
+  width: auto;
+  display: block;
+  margin-bottom: 16px;
 }
 
 .footer-brand p {
@@ -1972,7 +1964,7 @@ button {
 
   .header-actions {
     gap: 10px;
-    margin-left: 0;
+    margin-left: auto;
   }
 
   .section {
@@ -2125,8 +2117,8 @@ button {
     min-width: 0;
   }
 
-  .brand strong {
-    font-size: 24px;
+  .brand .logo {
+    height: 34px;
   }
 
   .section {
@@ -2592,8 +2584,8 @@ button {
     width: calc(100% - 24px);
   }
 
-  .brand strong {
-    font-size: 22px;
+  .brand .logo {
+    height: 30px;
   }
 
   .hero h1 {

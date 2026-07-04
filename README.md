@@ -1,6 +1,6 @@
 <div align="center">
 
-# HITS Modern Site Renewal
+# [HITS Modern Site Renewal](https://hits.ive.codes)
 
 HITS 공식 웹사이트 마이그레이션
 
@@ -10,8 +10,9 @@ React + Vite로 제작한 ㈜에이치아이티에스(HITS) 공식 웹사이트 
 ![React](https://img.shields.io/badge/react-19-61DAFB)
 ![Vite](https://img.shields.io/badge/vite-7-646CFF)
 ![Languages](https://img.shields.io/badge/i18n-KR%20%7C%20EN%20%7C%20CN-111827)
+[![Website](https://img.shields.io/badge/website-hits.ive.codes-0B2A8C)](https://hits.ive.codes)
 
-[Overview](#overview) · [Features](#features) · [Quick Start](#quick-start) · [Site Map](#site-map) · [Migration](#migration) · [Tech Stack](#tech-stack)
+[Live Site](https://hits.ive.codes) · [Overview](#overview) · [Features](#features) · [Quick Start](#quick-start) · [Site Map](#site-map) · [Migration](#migration) · [Tech Stack](#tech-stack)
 
 </div>
 

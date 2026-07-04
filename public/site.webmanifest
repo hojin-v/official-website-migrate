@@ -1,0 +1,26 @@
+{
+  "name": "HITS 에이치아이티에스 공식 홈페이지",
+  "short_name": "HITS",
+  "description": "HITS 에이치아이티에스 히츠 자동화·비전 검사 공식 홈페이지",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b2a8c",
+  "lang": "ko-KR",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/wp-content/uploads/2016/06/HITS-150x150.png",
+      "sizes": "150x150",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

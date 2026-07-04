@@ -18,6 +18,24 @@ const ROUTE_ALIASES = {
   "/rnd": "/rnd/performance",
 };
 
+const BREADCRUMB_LABELS = {
+  "/": "HITS 홈",
+  "/company/ceo": "회사소개",
+  "/company/business": "사업영역",
+  "/company/history": "연혁",
+  "/company/location": "오시는 길",
+  "/company/partners": "파트너",
+  "/products": "제품",
+  "/products/automation": "자동화 시스템",
+  "/products/vision": "비전 검사 시스템",
+  "/products/packing": "패킹·출하 시스템",
+  "/rnd/performance": "R&D 성과",
+  "/rnd/key-technology": "핵심 기술",
+  "/rnd/core-competencies": "핵심 역량",
+  "/pr": "홍보센터",
+  "/pr/news": "HITS 뉴스",
+};
+
 export const seoRoutes = [
   {
     path: "/",
@@ -173,9 +191,42 @@ export function getSeo(path = "/", lang = "kr") {
   };
 }
 
+function breadcrumbItems(path) {
+  const cleanPath = canonicalPath(path).split("#")[0];
+  if (cleanPath === "/") {
+    return [
+      {
+        name: BREADCRUMB_LABELS["/"],
+        item: absoluteUrl("/"),
+      },
+    ];
+  }
+
+  const parts = cleanPath.split("/").filter(Boolean);
+  const items = [
+    {
+      name: BREADCRUMB_LABELS["/"],
+      item: absoluteUrl("/"),
+    },
+  ];
+
+  let current = "";
+  for (const part of parts) {
+    current = `${current}/${part}`;
+    const canonical = canonicalPath(current);
+    items.push({
+      name: BREADCRUMB_LABELS[canonical] || part,
+      item: absoluteUrl(canonical),
+    });
+  }
+
+  return items.filter((item, index, list) => list.findIndex((candidate) => candidate.item === item.item) === index);
+}
+
 export function buildStructuredData(seo) {
   const orgId = `${SITE_URL}/#organization`;
   const websiteId = `${SITE_URL}/#website`;
+  const breadcrumbId = `${seo.canonical}#breadcrumb`;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -187,6 +238,7 @@ export function buildStructuredData(seo) {
         alternateName: [
           "에이치아이티에스",
           "히츠",
+          "(주)에이치아이티에스",
           "High Image Technology System",
           "HITS Co., Ltd.",
         ],
@@ -196,6 +248,18 @@ export function buildStructuredData(seo) {
           "반도체·디스플레이·이차전지 분야의 자동화 장비와 비전 검사 시스템을 개발하는 기업",
         email: "hitssales@highimage.co.kr",
         telephone: "+82-2-2066-3890",
+        foundingDate: "1999",
+        sameAs: ["https://highimage.co.kr/"],
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            contactType: "sales",
+            telephone: "+82-2-2066-3890",
+            email: "hitssales@highimage.co.kr",
+            areaServed: "KR",
+            availableLanguage: ["ko", "en", "zh"],
+          },
+        ],
         address: {
           "@type": "PostalAddress",
           addressCountry: "KR",
@@ -221,11 +285,23 @@ export function buildStructuredData(seo) {
         description: seo.description,
         isPartOf: { "@id": websiteId },
         about: { "@id": orgId },
+        breadcrumb: { "@id": breadcrumbId },
+        keywords: seo.keywords,
         primaryImageOfPage: {
           "@type": "ImageObject",
           url: seo.image,
         },
         inLanguage: seo.lang,
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": breadcrumbId,
+        itemListElement: breadcrumbItems(seo.path).map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+          item: item.item,
+        })),
       },
     ],
   };

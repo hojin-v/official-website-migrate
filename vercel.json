@@ -1,0 +1,99 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/company",
+      "destination": "/company/ceo",
+      "permanent": true
+    },
+    {
+      "source": "/rnd",
+      "destination": "/rnd/performance",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/company/ceo",
+      "destination": "/company/ceo/index.html"
+    },
+    {
+      "source": "/company/business",
+      "destination": "/company/business/index.html"
+    },
+    {
+      "source": "/company/history",
+      "destination": "/company/history/index.html"
+    },
+    {
+      "source": "/company/location",
+      "destination": "/company/location/index.html"
+    },
+    {
+      "source": "/company/partners",
+      "destination": "/company/partners/index.html"
+    },
+    {
+      "source": "/products",
+      "destination": "/products/index.html"
+    },
+    {
+      "source": "/products/automation",
+      "destination": "/products/automation/index.html"
+    },
+    {
+      "source": "/products/vision",
+      "destination": "/products/vision/index.html"
+    },
+    {
+      "source": "/products/packing",
+      "destination": "/products/packing/index.html"
+    },
+    {
+      "source": "/rnd/performance",
+      "destination": "/rnd/performance/index.html"
+    },
+    {
+      "source": "/rnd/key-technology",
+      "destination": "/rnd/key-technology/index.html"
+    },
+    {
+      "source": "/rnd/core-competencies",
+      "destination": "/rnd/core-competencies/index.html"
+    },
+    {
+      "source": "/pr",
+      "destination": "/pr/index.html"
+    },
+    {
+      "source": "/pr/news",
+      "destination": "/pr/news/index.html"
+    },
+    {
+      "source": "/((?!.*\\.).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

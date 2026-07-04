@@ -4,7 +4,7 @@
 
 HITS 공식 웹사이트 마이그레이션
 
-React + Vite로 제작한 ㈜에이치아이티에스(HITS) 공식 웹사이트 리뉴얼 프로젝트입니다. 레거시 `highimage.co.kr`의 회사 소개, 제품군, R&D, 홍보센터 콘텐츠를 정적 데이터로 정리하고 한국어/영어/중국어 UI를 제공하는 해시 라우팅 SPA입니다.
+React + Vite로 제작한 ㈜에이치아이티에스(HITS) 공식 웹사이트 리뉴얼 프로젝트입니다. 레거시 `highimage.co.kr`의 회사 소개, 제품군, R&D, 홍보센터 콘텐츠를 정적 데이터로 정리하고 한국어/영어/중국어 UI를 제공하는 정적 웹사이트입니다.
 
 ![Platform](https://img.shields.io/badge/platform-Web-2563EB)
 ![React](https://img.shields.io/badge/react-19-61DAFB)
@@ -20,7 +20,7 @@ React + Vite로 제작한 ㈜에이치아이티에스(HITS) 공식 웹사이트 
 
 이 저장소는 HITS의 기존 WordPress 기반 사이트를 현대적인 정적 프론트엔드로 이전하기 위한 작업본입니다.
 
-메뉴는 `HOME`, `COMPANY`, `PRODUCTS`, `R&D`, `PR Center`로 구성되어 있으며, 제품 상세 스펙과 회사 연혁, 파트너, R&D 성과, 뉴스 콘텐츠를 `src/data`의 언어별 정적 모듈로 관리합니다. 라우팅은 정적 호스팅에 맞게 hash URL을 사용합니다.
+메뉴는 `HOME`, `COMPANY`, `PRODUCTS`, `R&D`, `PR Center`로 구성되어 있으며, 제품 상세 스펙과 회사 연혁, 파트너, R&D 성과, 뉴스 콘텐츠를 `src/data`의 언어별 정적 모듈로 관리합니다. 라우팅은 검색엔진이 인식하기 쉬운 clean URL을 사용하고, 빌드 시 route별 HTML shell과 `sitemap.xml`을 생성합니다.
 
 | Area | Best For | Main Contents |
 | --- | --- | --- |
@@ -35,7 +35,9 @@ React + Vite로 제작한 ㈜에이치아이티에스(HITS) 공식 웹사이트 
 | Feature | Description |
 | --- | --- |
 | 정적 SPA | Vite 기반 React 앱으로 빌드 후 `dist/`만 정적 호스팅하면 실행됩니다. |
-| 해시 라우팅 | 서버 rewrite 설정 없이 `#/company/history` 같은 URL로 하위 페이지를 이동합니다. |
+| SEO 친화 URL | `/company/history` 같은 canonical URL로 하위 페이지를 이동합니다. |
+| Route별 SEO 메타 | 빌드 시 페이지별 title, description, canonical, Open Graph, JSON-LD를 생성합니다. |
+| 검색엔진 제출 파일 | `robots.txt`와 `sitemap.xml`을 생성해 Google/Naver 수집을 돕습니다. |
 | 다국어 데이터 | 한국어, 영어, 중국어 콘텐츠와 UI 문구를 `src/data`와 `src/i18n.jsx`에서 분리 관리합니다. |
 | 제품 브라우저 | Automation, Vision, Packing/Distribution 카테고리와 장비별 상세 정보를 탐색합니다. |
 | 메가 메뉴 | 데스크톱 전체 메뉴와 모바일 오버레이 메뉴를 같은 메뉴 모델에서 렌더링합니다. |
@@ -63,21 +65,21 @@ npm run preview
 
 | Route | Page |
 | --- | --- |
-| `#/` | Home |
-| `#/company/ceo` | CEO Message |
-| `#/company/business` | Business Field |
-| `#/company/history` | History |
-| `#/company/location` | Location |
-| `#/company/partners` | Partners |
-| `#/products` | Product Overview |
-| `#/products/automation` | Automation Systems |
-| `#/products/vision` | Vision Inspection Systems |
-| `#/products/packing` | Packing / Distribution Systems |
-| `#/rnd/performance` | R&D Performance |
-| `#/rnd/key-technology` | Key Technology |
-| `#/rnd/core-competencies` | Core Competencies |
-| `#/pr` | PR Center |
-| `#/pr/news` | HITS News |
+| `/` | Home |
+| `/company/ceo` | CEO Message |
+| `/company/business` | Business Field |
+| `/company/history` | History |
+| `/company/location` | Location |
+| `/company/partners` | Partners |
+| `/products` | Product Overview |
+| `/products/automation` | Automation Systems |
+| `/products/vision` | Vision Inspection Systems |
+| `/products/packing` | Packing / Distribution Systems |
+| `/rnd/performance` | R&D Performance |
+| `/rnd/key-technology` | Key Technology |
+| `/rnd/core-competencies` | Core Competencies |
+| `/pr` | PR Center |
+| `/pr/news` | HITS News |
 
 ## Migration
 
@@ -89,7 +91,10 @@ npm run preview
 | `src/data/content.en.js` | 영어 콘텐츠 데이터 |
 | `src/data/content.cn.js` | 중국어 콘텐츠 데이터 |
 | `src/data/ui.js` | 메뉴, CTA, 접근성 문구 등 UI 문자열 |
+| `src/seo.js` | canonical route, SEO metadata, structured data 정의 |
+| `scripts/postbuild-seo.mjs` | 빌드 후 route별 HTML shell, `sitemap.xml`, `robots.txt` 생성 |
 | `public/assets/` | 런타임에서 직접 참조하는 공개 이미지 아카이브 |
+| `public/robots.txt` | 정적 호스팅 기본 robots 파일 |
 | `docs/CONTENT-INVENTORY.md` | 레거시 콘텐츠 원천과 페이지별 구조 기록 |
 | `docs/GAP-REPORT.md` | 마이그레이션 검수 및 보강 후보 기록 |
 
@@ -102,8 +107,9 @@ npm run preview
 | App | React 19 | 컴포넌트 기반 UI |
 | Build | Vite 7 | 개발 서버와 정적 번들 |
 | Icons | lucide-react | 메뉴, 검색, 연락처 아이콘 |
-| Routing | Hash URL | 정적 호스팅 친화적 페이지 전환 |
+| Routing | History API + Vercel rewrites | SEO 친화적 clean URL 페이지 전환 |
 | Content | ES Modules | 언어별 정적 콘텐츠 데이터 |
+| SEO | Build-time HTML shell | route별 metadata, sitemap, robots 생성 |
 | Styling | CSS | 반응형 레이아웃, 디자인 토큰, 모션 |
 
 ## Repository Structure
@@ -117,16 +123,19 @@ npm run preview
 |   `-- assets/
 |-- scripts/
 |   |-- crawl_highimage.py
-|   `-- crawl_highimage_menu_deep.py
+|   |-- crawl_highimage_menu_deep.py
+|   `-- postbuild-seo.mjs
 |-- src/
 |   |-- data/
 |   |-- hooks/
 |   |-- i18n.jsx
 |   |-- main.jsx
+|   |-- seo.js
 |   `-- styles.css
 |-- index.html
 |-- package-lock.json
 |-- package.json
+|-- vercel.json
 `-- README.md
 ```
 

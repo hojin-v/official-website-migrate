@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useReveal } from "./hooks/useReveal";
 import { LangProvider, useI18n, LANGS, LANG_LABELS } from "./i18n";
+import { buildStructuredData, canonicalPath, getSeo, toPublicPath } from "./seo";
 import "./styles.css";
 
 /* ------------------------------------------------------------------ */
@@ -114,23 +115,147 @@ function Logo({ variant = "light", className = "" }) {
 /* ------------------------------------------------------------------ */
 /* Routing helpers                                                     */
 /* ------------------------------------------------------------------ */
-function routeFromHash() {
-  const hash = window.location.hash.replace(/^#/, "");
-  if (!hash || hash === "/") return "/";
-  return hash.startsWith("/") ? hash : `/${hash}`;
+function routeFromLocation() {
+  if (window.location.hash.startsWith("#/")) {
+    const legacyRoute = canonicalPath(window.location.hash.slice(1));
+    window.history.replaceState(null, "", legacyRoute);
+    return legacyRoute;
+  }
+
+  const cleanPath = canonicalPath(window.location.pathname);
+  const hash = window.location.hash && !window.location.hash.startsWith("#/") ? window.location.hash : "";
+  const next = `${cleanPath}${hash}`;
+  const current = `${window.location.pathname}${hash}`;
+
+  if (next !== current) {
+    window.history.replaceState(null, "", next);
+  }
+  return next;
 }
 
-function useHashRoute() {
-  const [route, setRoute] = React.useState(routeFromHash);
+function shouldHandleClientNavigation(anchor, event) {
+  if (!anchor || event.defaultPrevented) return false;
+  if (event.button !== 0 || event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) return false;
+  if (anchor.target && anchor.target !== "_self") return false;
+  if (anchor.hasAttribute("download")) return false;
+  const url = new URL(anchor.href, window.location.href);
+  if (url.origin !== window.location.origin) return false;
+  if (!/^https?:$/.test(url.protocol)) return false;
+  if (/\.[a-z0-9]{2,8}$/i.test(url.pathname)) return false;
+  return true;
+}
+
+function useHistoryRoute() {
+  const [route, setRoute] = React.useState(routeFromLocation);
+
   React.useEffect(() => {
-    const onHash = () => setRoute(routeFromHash());
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    const updateRoute = () => setRoute(routeFromLocation());
+    const onClick = (event) => {
+      const anchor = event.target.closest?.("a[href]");
+      if (!shouldHandleClientNavigation(anchor, event)) return;
+      const url = new URL(anchor.href, window.location.href);
+      const nextRoute = `${canonicalPath(url.pathname)}${url.hash}`;
+      event.preventDefault();
+      if (nextRoute !== routeFromLocation()) {
+        window.history.pushState(null, "", nextRoute);
+      }
+      updateRoute();
+    };
+
+    document.addEventListener("click", onClick);
+    window.addEventListener("popstate", updateRoute);
+    window.addEventListener("hashchange", updateRoute);
+    return () => {
+      document.removeEventListener("click", onClick);
+      window.removeEventListener("popstate", updateRoute);
+      window.removeEventListener("hashchange", updateRoute);
+    };
   }, []);
+
   return route;
 }
 
-const to = (path) => `#${path}`;
+const to = (path) => toPublicPath(path);
+
+function upsertMeta(selector, create, content) {
+  let el = document.head.querySelector(selector);
+  if (!el) {
+    el = create();
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function useDocumentSeo(route) {
+  const { lang } = useI18n();
+  React.useEffect(() => {
+    const seo = getSeo(route, lang);
+    document.title = seo.title;
+
+    upsertMeta('meta[name="description"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("name", "description");
+      return el;
+    }, seo.description);
+    upsertMeta('meta[name="keywords"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("name", "keywords");
+      return el;
+    }, seo.keywords);
+    upsertMeta('meta[name="robots"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("name", "robots");
+      return el;
+    }, seo.robots);
+    upsertMeta('meta[property="og:title"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("property", "og:title");
+      return el;
+    }, seo.title);
+    upsertMeta('meta[property="og:description"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("property", "og:description");
+      return el;
+    }, seo.description);
+    upsertMeta('meta[property="og:url"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("property", "og:url");
+      return el;
+    }, seo.canonical);
+    upsertMeta('meta[property="og:image"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("property", "og:image");
+      return el;
+    }, seo.image);
+    upsertMeta('meta[name="twitter:title"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("name", "twitter:title");
+      return el;
+    }, seo.title);
+    upsertMeta('meta[name="twitter:description"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("name", "twitter:description");
+      return el;
+    }, seo.description);
+
+    let canonical = document.head.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", seo.canonical);
+
+    let structured = document.getElementById("seo-structured-data");
+    if (!structured) {
+      structured = document.createElement("script");
+      structured.id = "seo-structured-data";
+      structured.type = "application/ld+json";
+      document.head.appendChild(structured);
+    }
+    structured.textContent = JSON.stringify(buildStructuredData(seo));
+  }, [route, lang]);
+}
 
 function topSection(route) {
   if (route.startsWith("/company")) return "/company";
@@ -1420,7 +1545,8 @@ function renderRoute(route) {
 
 function App() {
   const { lang } = useI18n();
-  const route = useHashRoute();
+  const route = useHistoryRoute();
+  useDocumentSeo(route);
   useScrollToTop(route);
   const pageKey = route.split("#")[0];
   return (

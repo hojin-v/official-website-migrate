@@ -41,6 +41,9 @@ Thumbs.db
 .agents/
 .codex/
 
+# Local-only working notes and owner checklists
+local-docs/
+
 # Deployment and test artifacts
 .netlify/
 .vercel/

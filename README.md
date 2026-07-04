@@ -37,7 +37,7 @@ React + Vite로 제작한 ㈜에이치아이티에스(HITS) 공식 웹사이트 
 | 정적 SPA | Vite 기반 React 앱으로 빌드 후 `dist/`만 정적 호스팅하면 실행됩니다. |
 | SEO 친화 URL | `/company/history` 같은 canonical URL로 하위 페이지를 이동합니다. |
 | Route별 SEO 메타 | 빌드 시 페이지별 title, description, canonical, Open Graph, JSON-LD를 생성합니다. |
-| 검색엔진 제출 파일 | `robots.txt`와 `sitemap.xml`을 생성해 Google/Naver 수집을 돕습니다. |
+| 검색엔진 제출 파일 | `robots.txt`, `sitemap.xml`, `rss.xml`을 생성해 Google/Naver 수집을 돕습니다. |
 | 다국어 데이터 | 한국어, 영어, 중국어 콘텐츠와 UI 문구를 `src/data`와 `src/i18n.jsx`에서 분리 관리합니다. |
 | 제품 브라우저 | Automation, Vision, Packing/Distribution 카테고리와 장비별 상세 정보를 탐색합니다. |
 | 메가 메뉴 | 데스크톱 전체 메뉴와 모바일 오버레이 메뉴를 같은 메뉴 모델에서 렌더링합니다. |
@@ -80,6 +80,10 @@ npm run preview
 | `/rnd/core-competencies` | Core Competencies |
 | `/pr` | PR Center |
 | `/pr/news` | HITS News |
+| `/pr/news/website-renewal` | Website Renewal News |
+| `/pr/news/20th-anniversary` | 20th Anniversary News |
+| `/pr/news/bucheon-office-relocation` | Bucheon Office Relocation News |
+| `/pr/news/ir52-jang-young-sil-award` | IR52 Jang Young Sil Award News |
 
 ## Migration
 
@@ -92,7 +96,7 @@ npm run preview
 | `src/data/content.cn.js` | 중국어 콘텐츠 데이터 |
 | `src/data/ui.js` | 메뉴, CTA, 접근성 문구 등 UI 문자열 |
 | `src/seo.js` | canonical route, SEO metadata, structured data 정의 |
-| `scripts/postbuild-seo.mjs` | 빌드 후 route별 HTML shell, `sitemap.xml`, `robots.txt` 생성 |
+| `scripts/postbuild-seo.mjs` | 빌드 후 route별 HTML shell, `sitemap.xml`, `rss.xml`, `robots.txt` 생성 |
 | `public/assets/` | 런타임에서 직접 참조하는 공개 이미지 아카이브 |
 | `public/robots.txt` | 정적 호스팅 기본 robots 파일 |
 | `docs/CONTENT-INVENTORY.md` | 레거시 콘텐츠 원천과 페이지별 구조 기록 |

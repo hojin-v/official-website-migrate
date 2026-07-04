@@ -948,6 +948,7 @@ export const pr = {
     {
       date: "2020-04-10",
       title: "에이치아이티에스(주) 홈페이지를 새단장하였습니다.",
+      publicSlug: "website-renewal",
       slug: "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc-%ed%99%88%ed%8e%98%ec%9d%b4%ec%a7%80%eb%a5%bc-%ec%83%88%eb%8b%a8%ec%9e%a5%ed%95%98%ec%98%80%ec%8a%b5%eb%8b%88-2",
       body: "2020년 3월 에이치아이티에스(주)의 홈페이지를 새단장하여 최적화된 화면을 제공해 드리고 있습니다.",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -959,6 +960,7 @@ export const pr = {
     {
       date: "2019-10-24",
       title: "에이치아이티에스(주)가 창사 20주년을 맞이 하였습니다.",
+      publicSlug: "20th-anniversary",
       slug: "hits%ea%b0%80-%ec%b0%bd%ec%82%ac-20%ec%a3%bc%eb%85%84%ec%9d%84-%eb%a7%9e%ec%9d%b4-%ed%95%98%ec%98%80%ec%8a%b5%eb%8b%88%eb%8b%a4",
       body: "HITS is celebrating its 20th anniversary. 에이치아이티에스(주)가 20주년을 맞이 하였습니다.",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -970,6 +972,7 @@ export const pr = {
     {
       date: "2017-04-05",
       title: "에이치아이티에스(주), 부천사옥 본사로 이전하였습니다.",
+      publicSlug: "bucheon-office-relocation",
       slug: "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc%ea%b0%80-%eb%a7%a4%ec%9d%bc%ea%b2%bd%ec%a0%9ctv%ec%99%80-%ec%a0%84%eb%9e%b5%ec%a0%81-mou%eb%a5%bc-%eb%a7%ba%ec%97%88-2",
       body: "에이치아이티에스(주), 부천사옥 본사로 이전하였습니다.",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -981,6 +984,7 @@ export const pr = {
     {
       date: "2014-10-27",
       title: "반도체 패키지 2D/3D 검사기술 적용 고속 검사 시스템 개발로 장영실상을 수상",
+      publicSlug: "ir52-jang-young-sil-award",
       slug: "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc-wire-bond-%ec%9e%90%eb%8f%99%ea%b2%80%ec%82%ac-%ec%8b%9c%ec%8a%a4%ed%85%9c%ec%9c%bc%eb%a1%9c-%ec%9e%a5%ec%98%81-2",
       body: "반도체 패키지 2D/3D 검사기술 적용 고속 검사 시스템 개발로 장영실상을 수상하였습니다.",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",

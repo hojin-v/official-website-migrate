@@ -25,6 +25,24 @@
       ]
     },
     {
+      "source": "/rss.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/feed.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=utf-8"
+        }
+      ]
+    },
+    {
       "source": "/robots.txt",
       "headers": [
         {
@@ -90,6 +108,22 @@
     {
       "source": "/pr/news",
       "destination": "/pr/news/index.html"
+    },
+    {
+      "source": "/pr/news/website-renewal",
+      "destination": "/pr/news/website-renewal/index.html"
+    },
+    {
+      "source": "/pr/news/20th-anniversary",
+      "destination": "/pr/news/20th-anniversary/index.html"
+    },
+    {
+      "source": "/pr/news/bucheon-office-relocation",
+      "destination": "/pr/news/bucheon-office-relocation/index.html"
+    },
+    {
+      "source": "/pr/news/ir52-jang-young-sil-award",
+      "destination": "/pr/news/ir52-jang-young-sil-award/index.html"
     },
     {
       "source": "/((?!.*\\.).*)",

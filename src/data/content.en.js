@@ -1238,6 +1238,7 @@ export const pr = {
     {
       "date": "2020-04-10",
       "title": "HITS Co., Ltd. has renewed its website.",
+      "publicSlug": "website-renewal",
       "slug": "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc-%ed%99%88%ed%8e%98%ec%9d%b4%ec%a7%80%eb%a5%bc-%ec%83%88%eb%8b%a8%ec%9e%a5%ed%95%98%ec%98%80%ec%8a%b5%eb%8b%88-2",
       "body": "In March 2020, HITS Co., Ltd. renewed its website to provide an optimized viewing experience.",
       "image": "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -1249,6 +1250,7 @@ export const pr = {
     {
       "date": "2019-10-24",
       "title": "HITS Co., Ltd. celebrated its 20th anniversary.",
+      "publicSlug": "20th-anniversary",
       "slug": "hits%ea%b0%80-%ec%b0%bd%ec%82%ac-20%ec%a3%bc%eb%85%84%ec%9d%84-%eb%a7%9e%ec%9d%b4-%ed%95%98%ec%98%80%ec%8a%b5%eb%8b%88%eb%8b%a4",
       "body": "HITS is celebrating its 20th anniversary. HITS Co., Ltd. celebrated its 20th anniversary.",
       "image": "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -1260,6 +1262,7 @@ export const pr = {
     {
       "date": "2017-04-05",
       "title": "HITS Co., Ltd. relocated its headquarters to the Bucheon office building.",
+      "publicSlug": "bucheon-office-relocation",
       "slug": "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc%ea%b0%80-%eb%a7%a4%ec%9d%bc%ea%b2%bd%ec%a0%9ctv%ec%99%80-%ec%a0%84%eb%9e%b5%ec%a0%81-mou%eb%a5%bc-%eb%a7%ba%ec%97%88-2",
       "body": "HITS Co., Ltd. relocated its headquarters to the Bucheon office building.",
       "image": "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -1271,6 +1274,7 @@ export const pr = {
     {
       "date": "2014-10-27",
       "title": "Won the Jang Young Sil Award for developing a high-speed inspection system using semiconductor package 2D/3D inspection technology",
+      "publicSlug": "ir52-jang-young-sil-award",
       "slug": "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc-wire-bond-%ec%9e%90%eb%8f%99%ea%b2%80%ec%82%ac-%ec%8b%9c%ec%8a%a4%ed%85%9c%ec%9c%bc%eb%a1%9c-%ec%9e%a5%ec%98%81-2",
       "body": "HITS won the Jang Young Sil Award for developing a high-speed inspection system using semiconductor package 2D/3D inspection technology.",
       "image": "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",

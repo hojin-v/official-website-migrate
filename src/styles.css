@@ -1852,6 +1852,8 @@ button {
   align-items: center;
   padding: 26px 0;
   border-top: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
 }
 
 .news-row:last-child { border-bottom: 1px solid var(--line); }
@@ -1869,6 +1871,41 @@ button {
 .news-row time { font-size: 14px; font-weight: 600; color: var(--accent); }
 .news-row h3 { margin-top: 8px; font-size: 19px; }
 .news-row p { margin-top: 8px; color: var(--muted); font-size: 15px; }
+
+.article-layout {
+  max-width: 940px;
+}
+
+.article-date {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.article-layout h2 {
+  margin-top: 12px;
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.article-layout p {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.article-gallery {
+  display: grid;
+  gap: 18px;
+  margin: 34px 0;
+}
+
+.article-gallery img {
+  width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 
 /* ===== Footer ===== */
 .footer {

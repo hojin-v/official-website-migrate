@@ -948,6 +948,7 @@ export const pr = {
     {
       date: "2020-04-10",
       title: "HITS有限公司官网已完成全新改版。",
+      publicSlug: "website-renewal",
       slug: "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc-%ed%99%88%ed%8e%98%ec%9d%b4%ec%a7%80%eb%a5%bc-%ec%83%88%eb%8b%a8%ec%9e%a5%ed%95%98%ec%98%80%ec%8a%b5%eb%8b%88-2",
       body: "2020年3月，HITS有限公司官网完成全新改版，为您提供优化后的浏览体验。",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -959,6 +960,7 @@ export const pr = {
     {
       date: "2019-10-24",
       title: "HITS有限公司迎来创立20周年。",
+      publicSlug: "20th-anniversary",
       slug: "hits%ea%b0%80-%ec%b0%bd%ec%82%ac-20%ec%a3%bc%eb%85%84%ec%9d%84-%eb%a7%9e%ec%9d%b4-%ed%95%98%ec%98%80%ec%8a%b5%eb%8b%88%eb%8b%a4",
       body: "HITS is celebrating its 20th anniversary. HITS有限公司迎来创立20周年。",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -970,6 +972,7 @@ export const pr = {
     {
       date: "2017-04-05",
       title: "HITS有限公司已迁至富川新总部大楼。",
+      publicSlug: "bucheon-office-relocation",
       slug: "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc%ea%b0%80-%eb%a7%a4%ec%9d%bc%ea%b2%bd%ec%a0%9ctv%ec%99%80-%ec%a0%84%eb%9e%b5%ec%a0%81-mou%eb%a5%bc-%eb%a7%ba%ec%97%88-2",
       body: "HITS有限公司已迁至富川新总部大楼。",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",
@@ -981,6 +984,7 @@ export const pr = {
     {
       date: "2014-10-27",
       title: "凭借应用半导体封装2D/3D检测技术的高速检测系统开发荣获张英实奖",
+      publicSlug: "ir52-jang-young-sil-award",
       slug: "%ec%97%90%ec%9d%b4%ec%b9%98%ec%95%84%ec%9d%b4%ed%8b%b0%ec%97%90%ec%8a%a4%ec%a3%bc-wire-bond-%ec%9e%90%eb%8f%99%ea%b2%80%ec%82%ac-%ec%8b%9c%ec%8a%a4%ed%85%9c%ec%9c%bc%eb%a1%9c-%ec%9e%a5%ec%98%81-2",
       body: "凭借应用半导体封装2D/3D检测技术的高速检测系统开发，HITS荣获张英实奖。",
       image: "/assets/wp-content/uploads/2016/06/20200305_111627_HDR-1024x768.jpg",

@@ -10,6 +10,7 @@ const dist = join(root, "dist");
 const indexPath = join(dist, "index.html");
 const template = await readFile(indexPath, "utf8");
 const today = new Date().toISOString().slice(0, 10);
+const buildDate = new Date().toUTCString();
 
 function escapeHtml(value) {
   return String(value)
@@ -51,6 +52,10 @@ const navLinks = [
   ["/rnd/core-competencies", "핵심 역량"],
   ["/pr", "홍보센터"],
   ["/pr/news", "HITS 뉴스"],
+  ["/pr/news/website-renewal", "홈페이지 리뉴얼"],
+  ["/pr/news/20th-anniversary", "창사 20주년"],
+  ["/pr/news/bucheon-office-relocation", "부천 사옥 이전"],
+  ["/pr/news/ir52-jang-young-sil-award", "IR52 장영실상 수상"],
 ];
 
 function contactSection() {
@@ -73,6 +78,14 @@ function equipmentItems(category) {
     equipment.name,
     ...equipment.systems.map((system) => `${system.name}: ${system.points.join(" / ")}`),
   ]);
+}
+
+function newsPostPath(post) {
+  return `/pr/news/${post.publicSlug || post.slug}`;
+}
+
+function newsPostByPath(path) {
+  return pr.posts.find((post) => newsPostPath(post) === path);
 }
 
 function routeContent(path) {
@@ -234,6 +247,21 @@ function routeContent(path) {
     };
   }
 
+  const newsPost = newsPostByPath(path);
+  if (newsPost) {
+    return {
+      lead: lines([newsPost.date, newsPost.title, newsPost.body]),
+      sections: [
+        section("HITS 뉴스 본문", {
+          paragraphs: [newsPost.body],
+        }),
+        section("관련 이미지", {
+          items: newsPost.images.map((image) => `${SITE_URL}${image}`),
+        }),
+      ],
+    };
+  }
+
   return {
     lead: "HITS 에이치아이티에스 히츠 공식 홈페이지",
     sections: [contactSection()],
@@ -281,22 +309,24 @@ ${sections}
 
 function seoHead(seo) {
   const json = JSON.stringify(buildStructuredData(seo));
+  const articleMeta = seo.type === "Article" ? `\n    <meta property="article:published_time" content="${escapeHtml(seo.publishedAt)}" />` : "";
   return `<!-- SEO:START -->
     <title>${escapeHtml(seo.title)}</title>
     <meta name="description" content="${escapeHtml(seo.description)}" />
     <meta name="keywords" content="${escapeHtml(seo.keywords)}" />
     <meta name="robots" content="${escapeHtml(seo.robots)}" />
     <link rel="canonical" href="${escapeHtml(seo.canonical)}" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="${seo.type === "Article" ? "article" : "website"}" />
     <meta property="og:site_name" content="HITS 에이치아이티에스" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:title" content="${escapeHtml(seo.title)}" />
     <meta property="og:description" content="${escapeHtml(seo.description)}" />
     <meta property="og:url" content="${escapeHtml(seo.canonical)}" />
-    <meta property="og:image" content="${escapeHtml(seo.image)}" />
+    <meta property="og:image" content="${escapeHtml(seo.image)}" />${articleMeta}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(seo.title)}" />
     <meta name="twitter:description" content="${escapeHtml(seo.description)}" />
+    <link rel="alternate" type="application/rss+xml" title="HITS 뉴스 RSS" href="${SITE_URL}/rss.xml" />
     <script type="application/ld+json" id="seo-structured-data">${json}</script>
     <!-- SEO:END -->`;
 }
@@ -339,6 +369,31 @@ ${routePaths
 </urlset>
 `;
 
+const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>HITS 에이치아이티에스 뉴스</title>
+    <link>${SITE_URL}/pr/news</link>
+    <description>HITS 에이치아이티에스 공식 홈페이지의 회사 소식입니다.</description>
+    <language>ko-KR</language>
+    <lastBuildDate>${buildDate}</lastBuildDate>
+${pr.posts
+  .map((post) => {
+    const link = `${SITE_URL}${newsPostPath(post)}`;
+    const pubDate = new Date(`${post.date}T00:00:00+09:00`).toUTCString();
+    return `    <item>
+      <title>${escapeHtml(post.title)}</title>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
+      <pubDate>${pubDate}</pubDate>
+      <description>${escapeHtml(post.body)}</description>
+    </item>`;
+  })
+  .join("\n")}
+  </channel>
+</rss>
+`;
+
 const robots = `User-agent: *
 Allow: /
 
@@ -349,4 +404,6 @@ Sitemap: ${SITE_URL}/sitemap.xml
 `;
 
 await writeFile(join(dist, "sitemap.xml"), sitemap);
+await writeFile(join(dist, "rss.xml"), rss);
+await writeFile(join(dist, "feed.xml"), rss);
 await writeFile(join(dist, "robots.txt"), robots);

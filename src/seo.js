@@ -18,6 +18,53 @@ const ROUTE_ALIASES = {
   "/rnd": "/rnd/performance",
 };
 
+export const newsRoutes = [
+  {
+    path: "/pr/news/website-renewal",
+    title: "에이치아이티에스 홈페이지 리뉴얼 | HITS 뉴스",
+    description:
+      "2020년 3월 에이치아이티에스(주)의 공식 홈페이지를 새단장하여 최적화된 화면을 제공한다는 HITS 소식입니다.",
+    priority: "0.6",
+    changefreq: "yearly",
+    type: "Article",
+    publishedAt: "2020-04-10",
+    image: "/assets/wp-content/uploads/2020/03/20200305_111700_HDR-scaled-1.jpg",
+  },
+  {
+    path: "/pr/news/20th-anniversary",
+    title: "에이치아이티에스 창사 20주년 | HITS 뉴스",
+    description:
+      "1999년 설립 이후 자동화 장비와 비전 검사 기술을 개발해 온 HITS 에이치아이티에스의 창사 20주년 소식입니다.",
+    priority: "0.6",
+    changefreq: "yearly",
+    type: "Article",
+    publishedAt: "2019-10-24",
+    image: "/assets/wp-content/uploads/2019/10/800.jpg",
+  },
+  {
+    path: "/pr/news/bucheon-office-relocation",
+    title: "에이치아이티에스 부천 사옥 이전 | HITS 뉴스",
+    description:
+      "㈜에이치아이티에스가 경기도 부천시 부일로 809번길 81 히트비젼타워 본사로 이전한 회사 소식입니다.",
+    priority: "0.55",
+    changefreq: "yearly",
+    type: "Article",
+    publishedAt: "2017-04-05",
+    image: "/assets/wp-content/uploads/2019/12/hit.jpg",
+  },
+  {
+    path: "/pr/news/ir52-jang-young-sil-award",
+    title: "IR52 장영실상 수상 | HITS 뉴스",
+    description:
+      "반도체 패키지 2D/3D 검사기술 적용 고속 검사 시스템 개발로 HITS 에이치아이티에스가 IR52 장영실상을 수상한 소식입니다.",
+    priority: "0.6",
+    changefreq: "yearly",
+    type: "Article",
+    publishedAt: "2014-10-27",
+    image: "/assets/wp-content/uploads/2020/03/JANG.jpg",
+  },
+];
+
 const BREADCRUMB_LABELS = {
   "/": "HITS 홈",
   "/company/ceo": "회사소개",
@@ -34,6 +81,7 @@ const BREADCRUMB_LABELS = {
   "/rnd/core-competencies": "핵심 역량",
   "/pr": "홍보센터",
   "/pr/news": "HITS 뉴스",
+  ...Object.fromEntries(newsRoutes.map((route) => [route.path, route.title.replace(" | HITS 뉴스", "")])),
 };
 
 export const seoRoutes = [
@@ -144,6 +192,7 @@ export const seoRoutes = [
     priority: "0.7",
     changefreq: "monthly",
   },
+  ...newsRoutes,
 ];
 
 export const routePaths = seoRoutes.map((route) => route.path);
@@ -227,82 +276,100 @@ export function buildStructuredData(seo) {
   const orgId = `${SITE_URL}/#organization`;
   const websiteId = `${SITE_URL}/#website`;
   const breadcrumbId = `${seo.canonical}#breadcrumb`;
+  const graph = [
+    {
+      "@type": "Organization",
+      "@id": orgId,
+      name: "HITS",
+      legalName: "주식회사 에이치아이티에스",
+      alternateName: [
+        "에이치아이티에스",
+        "히츠",
+        "(주)에이치아이티에스",
+        "High Image Technology System",
+        "HITS Co., Ltd.",
+      ],
+      url: SITE_URL,
+      logo: absoluteUrl("/favicon.svg"),
+      description:
+        "반도체·디스플레이·이차전지 분야의 자동화 장비와 비전 검사 시스템을 개발하는 기업",
+      email: "hitssales@highimage.co.kr",
+      telephone: "+82-2-2066-3890",
+      foundingDate: "1999",
+      sameAs: ["https://highimage.co.kr/"],
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "sales",
+          telephone: "+82-2-2066-3890",
+          email: "hitssales@highimage.co.kr",
+          areaServed: "KR",
+          availableLanguage: ["ko", "en", "zh"],
+        },
+      ],
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "KR",
+        addressRegion: "경기도",
+        addressLocality: "부천시",
+        streetAddress: "부일로 809번길 81 히트비젼타워 4층",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: SITE_URL,
+      name: "HITS 에이치아이티에스 공식 홈페이지",
+      alternateName: ["HITS", "에이치아이티에스", "히츠"],
+      publisher: { "@id": orgId },
+      inLanguage: "ko-KR",
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${seo.canonical}#webpage`,
+      url: seo.canonical,
+      name: seo.title,
+      description: seo.description,
+      isPartOf: { "@id": websiteId },
+      about: { "@id": orgId },
+      breadcrumb: { "@id": breadcrumbId },
+      keywords: seo.keywords,
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: seo.image,
+      },
+      inLanguage: seo.lang,
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": breadcrumbId,
+      itemListElement: breadcrumbItems(seo.path).map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        item: item.item,
+      })),
+    },
+  ];
+
+  if (seo.type === "Article") {
+    graph.push({
+      "@type": "Article",
+      "@id": `${seo.canonical}#article`,
+      headline: seo.title,
+      description: seo.description,
+      image: seo.image,
+      datePublished: seo.publishedAt,
+      dateModified: seo.publishedAt,
+      mainEntityOfPage: { "@id": `${seo.canonical}#webpage` },
+      author: { "@id": orgId },
+      publisher: { "@id": orgId },
+      inLanguage: seo.lang,
+    });
+  }
+
   return {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": orgId,
-        name: "HITS",
-        legalName: "주식회사 에이치아이티에스",
-        alternateName: [
-          "에이치아이티에스",
-          "히츠",
-          "(주)에이치아이티에스",
-          "High Image Technology System",
-          "HITS Co., Ltd.",
-        ],
-        url: SITE_URL,
-        logo: absoluteUrl("/favicon.svg"),
-        description:
-          "반도체·디스플레이·이차전지 분야의 자동화 장비와 비전 검사 시스템을 개발하는 기업",
-        email: "hitssales@highimage.co.kr",
-        telephone: "+82-2-2066-3890",
-        foundingDate: "1999",
-        sameAs: ["https://highimage.co.kr/"],
-        contactPoint: [
-          {
-            "@type": "ContactPoint",
-            contactType: "sales",
-            telephone: "+82-2-2066-3890",
-            email: "hitssales@highimage.co.kr",
-            areaServed: "KR",
-            availableLanguage: ["ko", "en", "zh"],
-          },
-        ],
-        address: {
-          "@type": "PostalAddress",
-          addressCountry: "KR",
-          addressRegion: "경기도",
-          addressLocality: "부천시",
-          streetAddress: "부일로 809번길 81 히트비젼타워 4층",
-        },
-      },
-      {
-        "@type": "WebSite",
-        "@id": websiteId,
-        url: SITE_URL,
-        name: "HITS 에이치아이티에스 공식 홈페이지",
-        alternateName: ["HITS", "에이치아이티에스", "히츠"],
-        publisher: { "@id": orgId },
-        inLanguage: "ko-KR",
-      },
-      {
-        "@type": "WebPage",
-        "@id": `${seo.canonical}#webpage`,
-        url: seo.canonical,
-        name: seo.title,
-        description: seo.description,
-        isPartOf: { "@id": websiteId },
-        about: { "@id": orgId },
-        breadcrumb: { "@id": breadcrumbId },
-        keywords: seo.keywords,
-        primaryImageOfPage: {
-          "@type": "ImageObject",
-          url: seo.image,
-        },
-        inLanguage: seo.lang,
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": breadcrumbId,
-        itemListElement: breadcrumbItems(seo.path).map((item, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          name: item.name,
-          item: item.item,
-        })),
-      },
-    ],
+    "@graph": graph,
   };
 }

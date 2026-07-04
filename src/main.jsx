@@ -176,6 +176,7 @@ function useHistoryRoute() {
 }
 
 const to = (path) => toPublicPath(path);
+const newsPostPath = (post) => `/pr/news/${post.publicSlug || post.slug}`;
 
 function upsertMeta(selector, create, content) {
   let el = document.head.querySelector(selector);
@@ -217,6 +218,11 @@ function useDocumentSeo(route) {
       el.setAttribute("property", "og:description");
       return el;
     }, seo.description);
+    upsertMeta('meta[property="og:type"]', () => {
+      const el = document.createElement("meta");
+      el.setAttribute("property", "og:type");
+      return el;
+    }, seo.type === "Article" ? "article" : "website");
     upsertMeta('meta[property="og:url"]', () => {
       const el = document.createElement("meta");
       el.setAttribute("property", "og:url");
@@ -237,6 +243,17 @@ function useDocumentSeo(route) {
       el.setAttribute("name", "twitter:description");
       return el;
     }, seo.description);
+
+    const articlePublished = document.head.querySelector('meta[property="article:published_time"]');
+    if (seo.type === "Article") {
+      upsertMeta('meta[property="article:published_time"]', () => {
+        const el = document.createElement("meta");
+        el.setAttribute("property", "article:published_time");
+        return el;
+      }, seo.publishedAt);
+    } else if (articlePublished) {
+      articlePublished.remove();
+    }
 
     let canonical = document.head.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -374,7 +391,7 @@ function buildSearchIndex(c, t) {
   c.company.partners.list.forEach((p) =>
     idx.push({ title: p.name, group: t("nav.partners"), path: "/company/partners" })
   );
-  c.pr.posts.forEach((p) => idx.push({ title: p.title, group: t("nav.news"), path: "/pr/news" }));
+  c.pr.posts.forEach((p) => idx.push({ title: p.title, group: t("nav.news"), path: newsPostPath(p) }));
 
   const seen = new Set();
   return idx.filter((it) => {
@@ -1422,7 +1439,7 @@ function PrNews() {
           <SectionHead title={c.pr.newsIndex.hero.desc} />
           <div className="news-list">
             {c.pr.posts.map((post, i) => (
-              <Reveal className="news-row" delay={i * 60} key={post.slug}>
+              <Reveal as="a" className="news-row" href={to(newsPostPath(post))} delay={i * 60} key={post.slug}>
                 <div className="news-row-thumb">
                   <img src={post.image} alt="" loading="lazy" />
                 </div>
@@ -1439,6 +1456,41 @@ function PrNews() {
           </div>
         </div>
       </section>
+    </>
+  );
+}
+
+function PrNewsDetail({ slug }) {
+  const { c, t } = useI18n();
+  const tabs = childrenOf(buildMenu(t), "/pr");
+  const post = c.pr.posts.find((item) => (item.publicSlug || item.slug) === slug);
+  if (!post) return <NotFound />;
+  return (
+    <>
+      <PageHero title={post.title} desc={post.body} image={post.image} />
+      <SubNav items={tabs} active="/pr/news" />
+      <article className="section">
+        <div className="container article-layout">
+          <Reveal>
+            <time className="article-date">{post.date.replace(/-/g, ".")}</time>
+            <h2>{post.title}</h2>
+            <p>{post.body}</p>
+          </Reveal>
+          <div className="article-gallery">
+            {post.images.map((image) => (
+              <Reveal key={image}>
+                <img src={image} alt={post.title} loading="lazy" />
+              </Reveal>
+            ))}
+          </div>
+          <Reveal>
+            <a className="btn btn--outline" href={to("/pr/news")}>
+              {t("cta.allNews2")}
+              <ArrowRight size={18} aria-hidden="true" />
+            </a>
+          </Reveal>
+        </div>
+      </article>
     </>
   );
 }
@@ -1536,6 +1588,7 @@ function renderRoute(route) {
     case "rnd":
       return <RndPage sub={parts[1]} />;
     case "pr":
+      if (parts[1] === "news" && parts[2]) return <PrNewsDetail slug={parts[2]} />;
       if (parts[1] === "news") return <PrNews />;
       return <PrCenter />;
     default:
